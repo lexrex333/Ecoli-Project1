@@ -17,11 +17,16 @@ Due to frequent genome rearrangement and horizontal gene transfer within bacteri
 
 ### Goals and Non-Goals
 Goals:
+
   Use metrics of ANI, Mash, and dDDH to compare genetic divergence/similarity of each population over time
+  
   Visualize changes in genetic similarity for each population, comparing populations to their ancestors
+  
   Provide code and documentation of our pipeline
+  
   Effectively incorporate software tools to compute ANI, Mash, and dDDH metrics
   
 Non-goals:
+
   Don’t need to compare each population to other populations
 
