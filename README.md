@@ -14,3 +14,14 @@ This project aims to compare the evolutionary divergence over time within each o
 
 ### Context
 Due to frequent genome rearrangement and horizontal gene transfer within bacterial evolution, sequence alignment can be prone to issues when assessing similarities between bacterial sequences. By using three different metrics; ANI, Mash, and dDDH; we will be able to better measure sequence similarity without relying on sequence alignment. ANI will be able to compute sequence similarity between homologous regions, Mash will measure the distances between subsequences within the sequence, and dDDH will derive genetic distances between sequences. 
+
+### Goals and Non-Goals
+Goals:
+  Use metrics of ANI, Mash, and dDDH to compare genetic divergence/similarity of each population over time
+  Visualize changes in genetic similarity for each population, comparing populations to their ancestors
+  Provide code and documentation of our pipeline
+  Effectively incorporate software tools to compute ANI, Mash, and dDDH metrics
+  
+Non-goals:
+  Don’t need to compare each population to other populations
+
