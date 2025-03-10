@@ -11,3 +11,6 @@ This project aims to compare the evolutionary divergence over time within each o
 [LTEE Introduction](https://the-ltee.org/about/)
 
 [Tenaillon et al.](https://www.nature.com/articles/nature18959)
+
+### Context
+Due to frequent genome rearrangement and horizontal gene transfer within bacterial evolution, sequence alignment can be prone to issues when assessing similarities between bacterial sequences. By using three different metrics; ANI, Mash, and dDDH; we will be able to better measure sequence similarity without relying on sequence alignment. ANI will be able to compute sequence similarity between homologous regions, Mash will measure the distances between subsequences within the sequence, and dDDH will derive genetic distances between sequences. 
