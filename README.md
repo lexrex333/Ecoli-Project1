@@ -7,5 +7,7 @@ The Long Term Evolution Experiment observes and quantifies the process of evolut
 
 This project aims to compare the evolutionary divergence over time within each of these twelve E. coli populations throughout 50,000 generations. Using 264 genomes sequenced by Tenaillon et al., we compare each population to its ancestral strain (REL606 or REL607) from 1988. Here, we present a pipeline to quantify and visualize the genome similarities of each strain in relation to its ancestors using metrics of average nucleotide identity (ANI), Mash, and digital DNA-DNA hybridization (dDDH). Previous research from Tenaillon et al. observed genetic changes within each population over time, but did not use these same metrics (ANI, Mash, dDDH) to compare populations to their ancestors.
 
+##### References: 
 [LTEE Introduction](https://the-ltee.org/about/)
+
 [Tenaillon et al.](https://www.nature.com/articles/nature18959)
