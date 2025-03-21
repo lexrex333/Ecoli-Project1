@@ -17,6 +17,6 @@ Tools:
 ## Input Data:
 * 256 _E. coli_ genomes from the Long Term Evolution Experiment (LTEE)
 * One ancestor (REL606) genome from the LTEE
-## Referances 
-[Introduction to the Long-Term Evolution Experiment (LTEE)](https://the-ltee.org/about/) 
-[Tempo and mode of genome evolution in a 50,000-generation experiment](https://www.nature.com/articles/nature18959)
+## References 
+* [Introduction to the Long-Term Evolution Experiment (LTEE)](https://the-ltee.org/about/) 
+* [Tempo and mode of genome evolution in a 50,000-generation experiment](https://www.nature.com/articles/nature18959)
