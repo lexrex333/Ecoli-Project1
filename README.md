@@ -5,11 +5,11 @@ Python modules:
 * TBD
 
 Tools:
-* FastQC
-* Trimmomatic
+* FastQC : https://github.com/s-andrews/FastQC
+* Trimmomatic : https://github.com/timflutre/trimmomatic 
 * SPAdes
-* FastANI
-* MASH
+* FastANI : https://github.com/ParBLiSS/FastANI 
+* MASH : https://github.com/marbl/mash 
 
 ## Input Data:
 * 256 _E. coli_ genomes from the Long Term Evolution Experiment (LTEE)
