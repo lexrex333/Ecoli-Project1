@@ -3,6 +3,7 @@
 ## Dependencies
 Python modules:
 * TBD
+
 Tools:
 * FastQC
 * Trimmomatic
