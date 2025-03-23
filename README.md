@@ -7,7 +7,7 @@ Python modules:
 Tools:
 * [FastQC](https://github.com/s-andrews/FastQC)
 * [Trimmomatic](https://github.com/timflutre/trimmomatic)
-* SPAdes : Installed in class server 
+* [SPAdes](https://github.com/ablab/spades)
 * [FastANI](https://github.com/ParBLiSS/FastANI)
 * [MASH](https://github.com/marbl/mash)
 ## Data Retrieval 
