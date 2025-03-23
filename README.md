@@ -2,7 +2,10 @@
 
 ## Dependencies
 Python modules:
-* TBD
+* csv
+* subprocess
+* os
+* more TBD
 
 Tools:
 * [FastQC](https://github.com/s-andrews/FastQC)
