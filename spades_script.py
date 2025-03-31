@@ -11,8 +11,6 @@ with open("LTEE_strains.csv") as file: #access data from csv file
     for row in rd:
         read_types[f"{row[6]}"] = f"{row[7]}" #add SRR numbers as keys and "single"/"paired" as values in dictionary
 
-# print(read_types)
-
 os.chdir("Fastqs") #navigate to folder containing genomes
 
 #function to run spades given a dictionary of read numbers and single/paired read statuses
@@ -26,9 +24,8 @@ def run_spades(read_dict):
             file1 = f"{key}"+"_1.fastq" #names of files containing reads for this genome
             file2 = f"{key}"+"_2.fastq"
             spades_command = f"spades.py -1 {file1} -2 {file2} -o {key}_assembly" #building command to run spades
-        else:
-            print("error") #print an error if no "single" or "paired" is found in dictionary
         os.system(spades_command) #execute command
         os.chdir("..") #navigate back to "Fastqs" folder
 
-# print(run_spades(read_types))
+print(run_spades(read_types))
+print("SPAdes complete")
