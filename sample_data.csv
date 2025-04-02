@@ -1,0 +1,24 @@
+﻿Population,Generation,Strain ID,Mutator,Reference,Facility,Accession,Read Type,Read Length,Sequencing Depth
+Ara+1,500,REL768A,None,This study,Genoscope,SRR2584408,single,36,70.2
+Ara+1,500,REL768B,None,This study,Genoscope,SRR2584409,single,36,41.1
+Ara+1,1000,REL958A,None,This study,Genoscope,SRR2584410,single,36,33.2
+Ara+1,1000,REL958B,None,This study,Genoscope,SRR2584411,single,36,34.6
+Ara+1,1500,REL1062A,None,This study,Genoscope,SRR2584438,single,36,40.3
+Ara+1,1500,REL1062B,None,This study,Genoscope,SRR2584462,single,36,39.8
+Ara+1,2000,REL1158A,None,This study,Genoscope,SRR2584463,single,36,61.4
+Ara+1,2000,REL1158C,None,This study,Genoscope,SRR2584464,single,36,65.2
+Ara+1,5000,REL2173A,IS,This study,Genoscope,SRR2584466,single,36,37.0
+Ara+1,5000,REL2173B,IS,This study,Genoscope,SRR2584467,single,36,70.4
+Ara+1,10000,REL4530A,IS,This study,Genoscope,SRR2584470,single,36,79.7
+Ara+1,10000,REL4530B,IS,This study,Genoscope,SRR2584490,single,36,74.2
+Ara+1,15000,REL7183A,IS,This study,Genoscope,SRR2584518,single,36,77.0
+Ara+1,15000,REL7183B,IS,This study,Genoscope,SRR2584508,single,36,72.7
+Ara+1,20000,REL9282A,IS,This study,Genoscope,SRR2584519,single,36,67.9
+Ara+1,20000,REL9282B,IS,This study,Genoscope,SRR2584520,single,36,40.0
+Ara+1,30000,REL10450,IS,This study,Genoscope,SRR2584521,single,36,56.8
+Ara+1,30000,REL10451,IS,This study,Genoscope,SRR2584522,single,36,49.6
+Ara+1,40000,REL11008,IS,W13,Genoscope,SRR2086043,single,36,37.4
+Ara+1,40000,REL11009,IS,W13,Genoscope,SRR2086070,single,36,41.7
+Ara+1,50000,REL11392,IS,This study,Genoscope,SRR2584524,single,51,779.6
+Ara+1,50000,REL11393,IS,This study,IntraGen,SRR2584534,paired,101,64.6
+Ancestor,0,REL606,,,,SRR22764941,paired,,
