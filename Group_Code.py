@@ -8,14 +8,14 @@ main_dir = "/home/project1/Ecoli-Project1" #main directory - change here
 os.makedirs(main_dir, exist_ok=True) #make the directory if not there
 os.chdir(main_dir) #move into the directory
 
-csv_strains = os.path.join(main_dir, "LTEE_strains.csv") #csv with strain info
-sra_prefetch_output = os.path.join(main_dir, "Prefetch_files") #where the sra files will go from prefetch output
-fastqs_faster_output = os.path.join(main_dir, "Fastqs") #where fasterq output is going to go (fastqs)
+csv_strains = os.path.join(main_dir, "sample_data.csv") #csv with strain info
+#sra_prefetch_output = os.path.join(main_dir, "Prefetch_files") #where the sra files will go from prefetch output
+#fastqs_faster_output = os.path.join(main_dir, "Fastqs") #where fasterq output is going to go (fastqs)
 
-os.makedirs(sra_prefetch_output, exist_ok=True) #make directory if not there
-os.makedirs(fastqs_faster_output, exist_ok=True) #same here - make directory if not there
+#os.makedirs(sra_prefetch_output, exist_ok=True) #make directory if not there
+#os.makedirs(fastqs_faster_output, exist_ok=True) #same here - make directory if not there
 
-
+'''
 # Step 1: opening csv file with all the strain info and moving the SRR numbers to a list
 
 #empty list to hold all the accession numbers
@@ -72,10 +72,12 @@ for accession in accessions: #for each accession in the accessions list
 
 print("All fastqs have been downloaded.")
 
+'''
 
 
-
-
+sample_reads = os.path.join(main_dir, "sample_reads")
+accessions = os.listdir(sample_reads)
+'''
 # 1. FastQC
 
 #function to find fastq
@@ -125,11 +127,14 @@ def multiqc(input_dir): #function to run multiqc
     #making sure this part was done
     print(f"MultiQC is done :) .")
 
-
+#Running fastqc and multiqc on the fastq files
+fastqc(accessions, sample_reads) #calling fastqc to run with the sample reads output
+multiqc(sample_reads) #calling multiqc to run wiht the fastqc output 
+'''
 #3. Trimmomatic
 
 def run_trimmomatic():
-    fastqs_dir= os.path.join(main_dir, "Fastqs")
+    fastqs_dir= os.path.join(main_dir, "sample_reads")
     trim_output= os.path.join(main_dir, "Trimmomatic_Results")
    
     os.makedirs(trim_output, exist_ok=True) #make sure the output directory exsists                                    
@@ -142,10 +147,11 @@ def run_trimmomatic():
 
             #construct the Trimmomatic command
             trimmomatic_command = [
-                "trimmomatic", "SE", "-phred33", fastq_path, trimmed_fastq,
+                "/home/project1/trimmomatic", "SE", "-phred33", fastq_path, trimmed_fastq,
                 "ILLUMINACLIP:TruSeq3-SE.fa:2:30:10", "LEADING:3", "TRAILING:3",
                 "SLIDINGWINDOW:4:15", "MINLEN:36"
             ]
+            print(trimmomatic_command)
  #run the Trimmomatic command
             subprocess.run(trimmomatic_command, check=True)
 
@@ -154,7 +160,7 @@ def run_trimmomatic():
     return trim_output
 
 trim_output = run_trimmomatic() #running trimmomatic
-
+'''
 #4. FastQC again
 #have to run FastQC and MultiQC on the trimmed files 
 fastqc(accessions, trim_output) #calling fastqc to run with the trimmed output
@@ -168,13 +174,13 @@ read_types = {} #create dictionary to hold read types (single/paired) for each g
 
 os.chdir("Ecoli-Project1") #navigate to folder containing csv file
 
-with open("LTEE_strains.csv") as file: #access data from csv file
+with open("sample_data.csv") as file: #access data from csv file
     rd = csv.reader(file, delimiter=",")
     next(file) #skip first line
     for row in rd:
         read_types[f"{row[6]}"] = f"{row[7]}" #add SRR numbers as keys and "single"/"paired" as values in dictionary
 
-os.chdir("Fastqs") #navigate to folder containing genomes
+os.chdir("sample_reads") #navigate to folder containing genomes
 
 #function to run spades given a dictionary of read numbers and single/paired read statuses
 def run_spades(read_dict):
@@ -192,3 +198,4 @@ def run_spades(read_dict):
 
 print(run_spades(read_types))
 print("SPAdes complete")
+'''
