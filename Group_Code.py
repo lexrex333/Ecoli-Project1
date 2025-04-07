@@ -77,7 +77,7 @@ print("All fastqs have been downloaded.")
 
 sample_reads = os.path.join(main_dir, "sample_reads")
 accessions = os.listdir(sample_reads)
-'''
+
 # 1. FastQC
 
 #function to find fastq
@@ -130,28 +130,34 @@ def multiqc(input_dir): #function to run multiqc
 #Running fastqc and multiqc on the fastq files
 fastqc(accessions, sample_reads) #calling fastqc to run with the sample reads output
 multiqc(sample_reads) #calling multiqc to run wiht the fastqc output 
-'''
+
 #3. Trimmomatic
 
 def run_trimmomatic():
-    fastqs_dir= os.path.join(main_dir, "sample_reads")
-    trim_output= os.path.join(main_dir, "Trimmomatic_Results")
+    fastqs_dir= os.path.join(main_dir, "sample_reads") #set directory containing raw fastq files  
+    trim_output= os.path.join(main_dir, "Trimmomatic_Results") #set directory to store the trimmed output files
    
     os.makedirs(trim_output, exist_ok=True) #make sure the output directory exsists                                    
-    for file in os.listdir(fastqs_dir): #loop through each file in the fastqs directory
+    # Define the paths to the trimmomatic jar and adapter file 
+    trimmomatic_jar = os.path.join(main_dir, "Trimmomatic-0.39", "trimmomatic-0.39.jar")
+    adapter_file = os.path.join(main_dir, "Trimmomatic-0.39", "adapters", "TruSeq3-SE.fa")
+    
+    for root, dirs, files in os.walk(fastqs_dir): #go through the fastq directory and subdirectories to find file 
+     for file in files:  #loop through all files ends with .fastq
         if file.endswith(".fastq"):
-            #construct the full path to the fastq file
-            fastq_path = os.path.join(fastqs_dir, file)
+            fastq_path = os.path.join(root, file)  #create full path to the file
             #construct the path for the trimmed output file
-            trimmed_fastq = os.path.join(trim_output, f"trimmed_{file}")
+            trimmed_fastq = os.path.join(trim_output, f"{file}")
 
-            #construct the Trimmomatic command
+            #construct the Trimmomatic command for trimming the fastq files 
+            #run trimmomatic, single end reads, specify phred quality score, input Fastq file path and output trimmed file path
+            #remove leading and trailing low quality bases, trimming if average quality <15, only retain reads that are 36 bases or longer 
             trimmomatic_command = [
-                "/home/project1/trimmomatic", "SE", "-phred33", fastq_path, trimmed_fastq,
-                "ILLUMINACLIP:TruSeq3-SE.fa:2:30:10", "LEADING:3", "TRAILING:3",
+                "/home/project1/miniconda3/envs/trimmomatic_env/bin/trimmomatic" , "SE", "-phred33", fastq_path, trimmed_fastq,
+                 f"ILLUMINACLIP:{adapter_file}:2:30:10", "LEADING:3", "TRAILING:3",
                 "SLIDINGWINDOW:4:15", "MINLEN:36"
-            ]
-            print(trimmomatic_command)
+            ] 
+            print("Running:", " ".join(trimmomatic_command))
  #run the Trimmomatic command
             subprocess.run(trimmomatic_command, check=True)
 
@@ -160,10 +166,24 @@ def run_trimmomatic():
     return trim_output
 
 trim_output = run_trimmomatic() #running trimmomatic
-'''
+
+#another function to run fastqc because it didn't want to work for trimmed files :(
+def fastqc_trimmed(folder): 
+    fastq_files = get_fastq(folder) #calling function to make a fastqs list
+
+    #creating the output folder
+    fastqc_output = os.path.join(folder, "FastQC_Results") #where the results will go -- within the trimmomatic results
+    os.makedirs(fastqc_output, exist_ok=True) #making directory if not already there
+
+    for fastq in fastq_files: #for each of the fastqs within the fastq files list
+        fastq_path = os.path.join(folder, fastq) #path of where the fastqs are at 
+        fastqc_command = ["fastqc", fastq_path, "-o", fastqc_output] #fastqc command
+        subprocess.run(fastqc_command, check = True) #run fastqc command 
+
+    
 #4. FastQC again
 #have to run FastQC and MultiQC on the trimmed files 
-fastqc(accessions, trim_output) #calling fastqc to run with the trimmed output
+fastqc_trimmed(trim_output) #calling fastqc to run with the trimmed output
 multiqc(trim_output) #calling multiqc to run wiht the fastqc output just made from the trimmed fastqs
 
 
@@ -172,7 +192,7 @@ multiqc(trim_output) #calling multiqc to run wiht the fastqc output just made fr
 
 read_types = {} #create dictionary to hold read types (single/paired) for each genome
 
-os.chdir("Ecoli-Project1") #navigate to folder containing csv file
+#os.chdir("Ecoli-Project1") #navigate to folder containing csv file
 
 with open("sample_data.csv") as file: #access data from csv file
     rd = csv.reader(file, delimiter=",")
@@ -180,22 +200,20 @@ with open("sample_data.csv") as file: #access data from csv file
     for row in rd:
         read_types[f"{row[6]}"] = f"{row[7]}" #add SRR numbers as keys and "single"/"paired" as values in dictionary
 
-os.chdir("sample_reads") #navigate to folder containing genomes
+#os.mkdir("sample_assemblies") #uncomment this out for the official one
 
 #function to run spades given a dictionary of read numbers and single/paired read statuses
 def run_spades(read_dict):
     for key, value in read_dict.items():
-        os.chdir(f"{key}") #navigate to folder containing the specific genome's read file(s)
+        # os.chdir(f"{key}") #navigate to folder containing the specific genome's read file(s)
         if value == "single":
-            filename = f"{key}"+".fastq" #name of file containing reads for this genome
-            spades_command = f"spades.py -s {filename} -o {key}_assembly" #building command to run spades and output in the same folder where the reads are contained
+            filename = f"Trimmomatic_Results/{key}"+".fastq" #name of file containing reads for this genome
+            spades_command = f"spades.py -s {filename} -o sample_assemblies/{key}_assembly" #building command to run spades and output in the same folder where the reads are contained
         elif value == "paired":
-            file1 = f"{key}"+"_1.fastq" #names of files containing reads for this genome
-            file2 = f"{key}"+"_2.fastq"
-            spades_command = f"spades.py -1 {file1} -2 {file2} -o {key}_assembly" #building command to run spades
+            file1 = f"Trimmomatic_Results/{key}"+"_1.fastq" #names of files containing reads for this genome
+            file2 = f"Trimmomatic_Results/{key}"+"_2.fastq"
+            spades_command = f"spades.py -1 {file1} -2 {file2} -o sample_assemblies/{key}_assembly" #building command to run spades
         os.system(spades_command) #execute command
-        os.chdir("..") #navigate back to "Fastqs" folder
-
+        
 print(run_spades(read_types))
 print("SPAdes complete")
-'''
