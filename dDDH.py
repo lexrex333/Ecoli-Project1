@@ -1,6 +1,8 @@
 import os
 import csv
 
+os.chdir("Ecoli-Project1")
+
 # accessions = []
 groups = {
     "Ara+1": []
@@ -42,25 +44,45 @@ def run_blast(comparedict):
                 print(value[i], value[i+j])
                 blast_command = f"blastn -query {value[i]}/{value[i]}_assembly/contigs.fasta -subject {value[i+j]}/{value[i+j]}_assembly/contigs.fasta -out {value[i]}_{value[i+j]}_blast.tsv -outfmt '6 nident length qcovus'"
                 # os.system(blast_command)
-                with open(f"{value[i]}_{value[i+j]}_blast.tsv") as file:
+                with open(f"{value[i]}_{value[i+j]}_blast.tsv") as file: #access blast results
                     rd = csv.reader(file, delimiter="\t")
-                    nident = []
-                    adjlength = []
+                    lengthlist = []
+                    alignlist = []
+                    nidentlist = []
                     for row in rd:
-                        nident.append(int(row[0]))
+                        nident = int(row[0])
+                        nidentlist.append(nident)
                         length = int(row[1])
+                        lengthlist.append(length)
                         qcovus = (int(row[2]))/100
-                        adjlength.append(length * qcovus)
-                print(nident)
-                print(adjlength)
-                dDDHlist = []
-                for x in range(len(nident)):
-                    dDDHlist.append(nident[x] / adjlength[x])
-                print(dDDHlist)
-
+                        adjust_align = nident * qcovus #adjusted alignment length
+                        alignlist.append(adjust_align)
+                    # print(alignlist)
+                    # print(lengthlist)
+                regdDDHlist = []
+                adjdDDHlist = []
+                for x in range(len(lengthlist)): #calculate regular and adjusted dDDH values for each contig
+                    regdDDHlist.append(nidentlist[x] / lengthlist[x])
+                    adjdDDHlist.append(alignlist[x] / lengthlist[x])
+                # calculating average dDDH across all contigs for both regular and adjusted dDDH
+                regdDDH = 0
+                for item in regdDDHlist:
+                    regdDDH += item
+                regdDDH = (regdDDH / len(regdDDHlist))
+                adjdDDH = 0
+                for item in adjdDDHlist:
+                    adjdDDH += item
+                adjdDDH = (adjdDDH / len(adjdDDHlist))   
+                print(regdDDH)
+                print(adjdDDH)             
+                # print(regdDDHlist)
+                # print(adjdDDHlist)
+                # for y in range(len(regdDDHlist)):
+                #     print(regdDDHlist[y], adjdDDHlist[y])
+                # print()
 
             # blast genome pairs and output length, qcovus, and nident
-            # dDDH = nident / (length * qcovus)
+            # dDDH = (nident * qcovus) / length
             # store dDDH in tsv with first column of genome vs genome
     return("deez")
 
