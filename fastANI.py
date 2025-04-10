@@ -9,8 +9,22 @@ main_dir = '/home/2025/aavalos4/Ecoli-Project1' #remove this when adding to pipe
 
 
 
-#FastANI
+#6. FastANI
 
+#function to keep running if fastas are too short
+def keep_running(fasta_path, min_len = 50):
+    with open(fasta_path, 'r') as f: #opening in read mode
+        seq = '' #holding sequence
+        for line in f: #for each line in the file
+            line = line.strip() #stripping whitespace
+            if line.startswith('>'): #if line starts with >
+                if len(seq) >= min_len: #if the length is greater than or equal to min length
+                    return True #return as true
+                seq = ''  #resetting for the next contig
+            else: #if its a sequence line,  
+                seq += line #add it to the current sequence
+        return len(seq) >= min_len #checking the last contig
+    
 #this function is going to run fastani within each pop group and compares each sample to the ancestor strain
 def fastani_run(main_dir, sample_csv, fastani_output="FastANI_Results", ancestor_name = "REL606A.fasta"):
 
@@ -36,7 +50,7 @@ def fastani_run(main_dir, sample_csv, fastani_output="FastANI_Results", ancestor
         population = row["Population"].strip() #getting population row
         
         #path to spades fastas
-        fasta_path = os.path.join(main_dir,"sample_assemblies", f"{sample}_assembly", "contigs.fasta") #fasta path to spades output file
+        fasta_path = os.path.join(main_dir,"shitty_sample_assemblies", f"{sample}_assembly", "contigs.fasta") #fasta path to spades output file
         
         if os.path.isfile(fasta_path): #if there actually is a file in that path
             sample_fastas[sample] = fasta_path #add the folder name and path to the fasta file to the fastas dictionary 
@@ -63,24 +77,32 @@ def fastani_run(main_dir, sample_csv, fastani_output="FastANI_Results", ancestor
             fasta1 = sample_fastas[sample1]
             fasta2 = sample_fastas[sample2]
 
+            #making sure it still runs with the fastas we have
+            if not keep_running(fasta1) or not keep_running(fasta2):
+                print(f"Skipping {sample1} vs {sample2}- not enough contigs - too short.")
+                continue
+
+            #making a temp file for fastani output
+            fastani_temp = os.path.join(fastani_output, f"{sample1}_vs_{sample2}.txt")
+
             #fastani command -- will need to change the pathway by manually getting fastANI
-            fastani = [main_dir, "fastANI", "-q", fasta1, "-r", fasta2, "--stdout"] #storing output to terminal instead to write to csv
+            fastani = [os.path.join(main_dir, "fastANI"), "-q", fasta1, "-r", fasta2, "-o", fastani_temp] #storing output to terminal instead to write to csv
             #running the command
-            result = subprocess.run(fastani, capture_output=True, text=True, check=True)
-            #print(result)
+            subprocess.run(fastani, check=True)
             
             #going through the output and adding to the results list
-            for line in result.stdout.strip().splitlines():
-                _, _, ani, fragments, total = line.strip().split("\t") #strip whitespace and split by tab
-                results.append({
-                    "Query": sample1,
-                    "Reference": sample2,
-                    "ANI": ani,
-                    "Matching_Fragments": fragments,
-                    "Total_Fragments": total,
-                    "Group": population,
-                    "Comparison_Method": "Within Population"
-                })
+            with open(fastani_temp, 'r') as f:
+                for line in f:
+                    _, _, ani, fragments, total = line.strip().split("\t") #strip whitespace and split by tab
+                    results.append({
+                        "Query": sample1,
+                        "Reference": sample2,
+                        "ANI": ani,
+                        "Matching_Fragments": fragments,
+                        "Total_Fragments": total,
+                        "Group": population,
+                        "Comparison_Method": "Within Population"
+                    })
 
     #STEP TWO: Comparing ALL the samples to the ancestor
     ancestor = sample_fastas.get(ancestor_name) #might have to change this later when added to pipeline
@@ -95,11 +117,17 @@ def fastani_run(main_dir, sample_csv, fastani_output="FastANI_Results", ancestor
         if sample == ancestor_name: #if the sample equals to the ancestor
             continue #ignore and keep going
 
+        #to make sure it keeps running even if some are empty
+        if not keep_running(fasta) or not keep_running(ancestor):
+            print(f"Skipping {sample} vs Ancestor - fasta too short.")
+            continue
+
+        #place to put fastani output temporarily
+        fastani_temp2 = os.path.join(fastani_output, f"{sample}_vs_{ancestor_name}.txt")
         #the fastani command
-        fastani_command = [main_dir, "fastANI", "-q", fasta, "-r", ancestor, "--stdout"]
+        fastani_command = [os.path.join(main_dir, "fastANI"), "-q", fasta, "-r", ancestor, "-o", fastani_temp2]
         #running the fastani command
-        result2 = subprocess.run(fastani_command, capture_output=True, text = True, check = True) #cleaner way of getting results
-        #print(result2)
+        subprocess.run(fastani_command, check = True)
 
         #this looks through the csv and gets the row where the accession is equal to the sample
         #and gets the value that is in the population column that matches that 
@@ -107,16 +135,17 @@ def fastani_run(main_dir, sample_csv, fastani_output="FastANI_Results", ancestor
         group = df[df["Accession"] == sample]["Population"].values[0]
 
         #going through the output and adding to the results list
-        for line in result2.stdout.strip().splitlines():
-            _, _, ani, fragments, total = line.strip().split("\t") #strip whitespace and split by tab
-            results.append({"Query": sample,
-                            "Reference": ancestor_name,
-                            "ANI": ani,
-                            "Matching_Fragments": fragments,
-                            "Total_Fragments": total,
-                            "Group": group,
-                            "Comparison_Method": "To Ancestor"
-                            })
+        with open(fastani_temp2, 'r') as f:
+            for line in f:
+                _, _, ani, fragments, total = line.strip().split("\t") #strip whitespace and split by tab
+                results.append({"Query": sample,
+                                "Reference": ancestor_name,
+                                "ANI": ani,
+                                "Matching_Fragments": fragments,
+                                "Total_Fragments": total,
+                                "Group": group,
+                                "Comparison_Method": "To Ancestor"
+                                })
     
     results_to_df = pd.DataFrame(results) #changing the results to a dataframe
     results_to_df.to_csv(os.path.join(fastani_output, "FastANI_Results_ALL.csv"), index = False)
