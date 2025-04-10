@@ -23,6 +23,7 @@ def run_blast(comparedict):
     os.mkdir("blast_output")
     #create a tsv file to hold output data that we can work with
     f = open("blast_output_data.tsv", "w")
+    f.write("sample 1\tsample 2\tdDDH\n")
     f.close()
     for key, value in comparedict.items():
         for i in range(len(value)):
@@ -50,9 +51,9 @@ def run_blast(comparedict):
                     total_length += lengthlist[x]
                 dDDH = (total_nident / total_length) #divide total nident / total length to get overall dDDH
                 print(dDDH)
-                f = open("blast_output_data.tsv", "w")
+                f = open("blast_output_data.tsv", "a")
                 f.write(f"{value[i]}\t{value[i+j]}\t{dDDH}\n")
                 f.close()
-    return("deez")
+    return("dDDH complete")
 
 print(run_blast(groups))
