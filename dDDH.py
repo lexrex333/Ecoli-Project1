@@ -23,7 +23,7 @@ def run_blast(comparedict):
     os.mkdir("blast_output")
     #create a tsv file to hold output data that we can work with
     f = open("blast_output_data.tsv", "w")
-    f.write("sample 1\tsample 2\tdDDH\n")
+    f.write("sample_1\tsample_2\tdDDH\tpopulation\n")
     f.close()
     for key, value in comparedict.items():
         for i in range(len(value)): #for accession # in population
@@ -53,7 +53,7 @@ def run_blast(comparedict):
                 dDDH = (total_nident / total_length) #divide total nident / total length to get overall dDDH
                 print(dDDH)
                 f = open("blast_output_data.tsv", "a") #write results in one big tsv file for all genome comparisons
-                f.write(f"{value[i]}\t{value[i+j]}\t{dDDH}\n")
+                f.write(f"{value[i]}\t{value[i+j]}\t{dDDH}\t{key}\n")
                 f.close()
     return("dDDH complete")
 
