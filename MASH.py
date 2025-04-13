@@ -11,11 +11,11 @@ groups = {
 base_path = "/home/2025/jfloros/Comp_Bio/FinalProject/sample_assemblies"
 results_file = "mash_results.txt"
 
-# Clear the file at the beginning (optional, just to start fresh each run)
+# Clearing output file so that each run produces a new file output
 with open(results_file, "w") as f:
     f.write("MASH Distance Results\n")
 
-# Read CSV
+# Reading in Data
 with open("sample_data.csv", mode='r') as f:
     csv_dict = csv.DictReader(f)
     for row in csv_dict:
@@ -25,18 +25,19 @@ with open("sample_data.csv", mode='r') as f:
         if group in groups:
             groups[group].append(accession)
 
-# Add ancestor accession
+# Add ancestor accession to each group for comparison
 ancestor = "SRR22764941"
 for group in groups:
     groups[group].append(ancestor)
 
-# Get FASTQ file path
+# Get FASTQ file path for analysis
 def get_contigs_path(accession):
     return os.path.join(base_path, f"{accession}_assembly", "contigs.fasta")
 
-# Create a sketch for an accession, return the .msh file path
+# Create a sketch for an accession, return the .msh file path, .msh will be stored with SPADES output
 def create_sketch(contigs_path):
     sketch_path = contigs_path + ".msh"
+    #Two Options Right now
     if os.path.exists(sketch_path):  # Force fresh sketch with updated paths
         os.remove(sketch_path)
     #if not os.path.exists(sketch_path):  # Only sketch if it doesn't exist
@@ -44,7 +45,7 @@ def create_sketch(contigs_path):
     subprocess.run(sketch_command, check=True)
     return sketch_path
 
-# Run MASH and write results
+# Run MASH and write results to file
 def MASH(one_accession, two_accession):
     one_contigs = get_contigs_path(one_accession)
     two_contigs = get_contigs_path(two_accession)
@@ -62,7 +63,7 @@ def MASH(one_accession, two_accession):
             f.write("Errors:\n" + result.stderr)
         f.write("\n")
 
-# Loop through pairwise comparisons
+# Loop through all pairwise comparisons
 for group_name, accession_list in groups.items():
     for one, two in combinations(accession_list, 2):
         MASH(one, two)
