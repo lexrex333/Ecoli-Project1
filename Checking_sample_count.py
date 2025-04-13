@@ -14,7 +14,7 @@ fastqs = os.path.join(main_dir,"Fastqs")
 df = pd.read_csv(csv, header = None)
 
 #getting the accession numbers and read type (whether its single or paired)
-accessions = df[[6, 7]].dropna() #picking them out
+accessions = df[[6, 7]].dropna() #picking them out and dropping rows or columns that are empty in csv file - debug
 accessions.columns = ["accession", "read_type"] #the names of the columns
 
 #cleaning it up so it doesn't give errors
