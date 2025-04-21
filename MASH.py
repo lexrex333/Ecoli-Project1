@@ -9,11 +9,11 @@ groups = {
 }
 
 base_path = "/home/2025/jfloros/Comp_Bio/FinalProject/sample_assemblies"
-results_file = "mash_results.txt"
+results_file = "mash_results.tsv"
 
 # Clearing output file so that each run produces a new file output
 with open(results_file, "w") as f:
-    f.write("MASH Distance Results\n")
+    f.write("Sample_1\tSample_2\tMASH_Distance\tSimilarity\tpvalue\tShared_Hashes\n")
 
 # Reading in Data
 with open("sample_data.csv", mode='r') as f:
@@ -37,7 +37,6 @@ def get_contigs_path(accession):
 # Create a sketch for an accession, return the .msh file path, .msh will be stored with SPADES output
 def create_sketch(contigs_path):
     sketch_path = contigs_path + ".msh"
-    #Two Options Right now
     if os.path.exists(sketch_path):  # Force fresh sketch with updated paths
         os.remove(sketch_path)
     #if not os.path.exists(sketch_path):  # Only sketch if it doesn't exist
@@ -56,13 +55,22 @@ def MASH(one_accession, two_accession):
     mash_command = ["./mash", "dist", sketch_one, sketch_two]
     result = subprocess.run(mash_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-    with open(results_file, "a") as f:
-        f.write(f"{one_accession} vs {two_accession}:\n")
-        f.write(result.stdout)
-        if result.stderr:
-            f.write("Errors:\n" + result.stderr)
-        f.write("\n")
+  # Parse the MASH output
+    if result.stdout:
+        parts = result.stdout.strip().split("\t")
+        if len(parts) == 5:
+            distance = parts[2]
+            similarity = 1 - float(distance)
+            pvalue = parts[3]
+            shared_hashes = parts[4]
 
+            with open(results_file, "a") as f:
+                f.write(f"{one_accession}\t{two_accession}\t{distance}\t{similarity}\t{pvalue}\t{shared_hashes}\n")
+        else:
+            print(f"Unexpected MASH output format for {one_accession} vs {two_accession}: {result.stdout}")
+    else:
+        print(f"Error: No output from MASH for {one_accession} vs {two_accession}")
+        
 # Loop through all pairwise comparisons
 for group_name, accession_list in groups.items():
     for one, two in combinations(accession_list, 2):
