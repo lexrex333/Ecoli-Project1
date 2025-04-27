@@ -44,9 +44,9 @@ sns.heatmap( #using seaborn
 )
 
 #titles and axis labels 
-plt.title("ANI, MASH Similarity, and dDDH Across Populations", fontsize=16) 
+plt.title("ANI, MASH Similarity, and dDDH Compared to Ancestor", fontsize=16) 
 plt.ylabel("Population", fontsize=14) #y-axis label
-plt.xlabel("Metric", fontsize=14)
+plt.xlabel("Metric", fontsize=14) #x-axis label
 
 #making the layout clean
 plt.tight_layout()
