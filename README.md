@@ -27,11 +27,11 @@ Tools:
 
 ## Installing the Softwares
 Downloading MultiQC: 
-bash``
+```bash
 
 git clone https://github.com/MultiQC/MultiQC.git
 
 cd MultiQC
 
 pip install .
-``
+```
