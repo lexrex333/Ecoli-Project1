@@ -24,3 +24,11 @@ Tools:
 * [Wiki Link](https://github.com/lexrex333/Ecoli-Project1/wiki) for project 
 * [Introduction to the Long-Term Evolution Experiment (LTEE)](https://the-ltee.org/about/) 
 * [Tempo and mode of genome evolution in a 50,000-generation experiment](https://www.nature.com/articles/nature18959)
+
+## Installing the Softwares
+Downloading MultiQC: 
+bash``
+git clone https://github.com/MultiQC/MultiQC.git
+cd MultiQC
+pip install .
+``
