@@ -85,6 +85,9 @@ To compare the results from the 3 different metrics, a TSV file with all 3 metri
 ### 5. Visualization
 Using this made TSV file, it will create a heatmap and a bar chart showing the different similarity calculations between each of the metrics.
 
+## TO TEST RUN - Use this sample data:
+This data involves shortened fastqs that were taken from the original data reads: [Sample Data]().
+
 ## How to Run the Script
 
 ### 1. 
