@@ -32,7 +32,7 @@ If you wanted to download your own reads, you can use this script to do so:
 ## Input Data:
 * 12 _E. coli_ genomes from the Long Term Evolution Experiment (LTEE)
 * One ancestor (REL606) genome from the LTEE
-* For reference, we have included a [full-length CSV](https://github.com/lexrex333/Ecoli-Project1/blob/main/LTEE_strains.csv) containing all 254 genomes from the LTEE. This is where we originally got all of our genome information from, but it is not used for running the pipeline in its current state.
+* For reference, we have included a [full-length CSV](https://github.com/lexrex333/Ecoli-Project1/blob/main/LTEE_strains.csv) containing all 254 genomes from the LTEE in this repository. This is where we originally got all of our genome information from, but this file is not used for running the pipeline in its current state.
 
 ## References 
 * [Wiki Link](https://github.com/lexrex333/Ecoli-Project1/wiki) for project 
