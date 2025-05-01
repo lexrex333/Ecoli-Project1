@@ -9,6 +9,7 @@ Python modules:
 
 Tools:
 * [FastQC](https://github.com/s-andrews/FastQC)
+* [MultiQC](https://github.com/MultiQC/MultiQC)
 * [Trimmomatic](https://github.com/timflutre/trimmomatic)
 * [SPAdes](https://github.com/ablab/spades)
 * [FastANI](https://github.com/ParBLiSS/FastANI)
