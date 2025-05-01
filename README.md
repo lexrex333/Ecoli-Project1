@@ -11,7 +11,7 @@ Python modules:
 * [matplotlib](https://matplotlib.org/stable/)
 * [seaborn](https://github.com/mwaskom/seaborn)
 
-## Tools
+Tools:
 * [FastQC](https://github.com/s-andrews/FastQC)
 * [MultiQC](https://github.com/MultiQC/MultiQC)
 * [Trimmomatic](https://github.com/timflutre/trimmomatic)
