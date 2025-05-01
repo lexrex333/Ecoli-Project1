@@ -40,7 +40,7 @@ If you wanted to download your own reads, you can use this script to do so:
 ## Installing Software Dependencies
 Make sure all of the tools are installed within the directory where you will be running everything. 
 
-In case you have issues with MultiQC, MASH, and Trimmomatic, please refer to this for additional help - also see their githubs linked up above. 
+In case you have issues with MultiQC, MASH, or Trimmomatic, please refer to this for additional help - also see their githubs linked up above. 
 
 Installing MultiQC: 
 ```bash
