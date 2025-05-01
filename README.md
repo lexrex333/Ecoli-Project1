@@ -37,12 +37,12 @@ If you wanted to download your own reads, you can use this script to do so:
 * [Introduction to the Long-Term Evolution Experiment (LTEE)](https://the-ltee.org/about/) 
 * [Tempo and mode of genome evolution in a 50,000-generation experiment](https://www.nature.com/articles/nature18959)
 
-## Installing the Softwares
-Make sure all of the tools are installed within the directory you will running everything. 
+## Installing Software Dependencies
+Make sure all of the tools are installed within the directory where you will be running everything. 
 
-In case you have issues with MultiQC, MASH, and Trimmomatic, please refer to this for additional help - also located within their githubs tagged up above. 
+In case you have issues with MultiQC, MASH, and Trimmomatic, please refer to this for additional help - also see their githubs linked up above. 
 
-Downloading MultiQC: 
+Installing MultiQC: 
 ```bash
 
 git clone https://github.com/MultiQC/MultiQC.git
@@ -52,7 +52,7 @@ cd MultiQC
 pip install .
 ```
 
-Downloading MASH:
+Installing MASH:
 ```bash
 
 wget https://github.com/marbl/Mash/releases/download/v2.3/mash-Linux64-v2.3.tar
@@ -62,39 +62,76 @@ tar -xvf mash-Linux64-v2.3.tar
 cp mash-Linux64-v2.3/mash .
 ```
 
-Downloading Trimmomatic:
+Installing Trimmomatic:
 ```bash
 Micky add stuff here.
 ```
-## What this Pipeline is Doing and the Output it Gives
-This pipeline is comparing 12 _E. coli_ strains to their ancestor strain, from which diverged into 12 different populations. To compare these strains to one another, we used 3 different metrics, that have not been used to compare these specific strains in other studies using the same strains. These metrics consisted of ANI, MASH, and dDDH. 
+## What this Pipeline Does and What it Outputs
+This pipeline is comparing 12 _E. coli_ strains to their ancestor strain, from which they diverged into 12 different populations. To compare these strains to one another, we used 3 different metrics that have not been used to compare these specific strains in other studies using the same strains. These metrics are ANI, MASH, and dDDH. 
 
-Previously we downloaded all of the SRR numbers from NCBI, and then ran them through Prefetch and Fasterq-Dump. This resulted in FASTQ files that could be used for running this pipeline. 
+Previously, we downloaded all of the SRR FASTQ files from NCBI and then ran them through Prefetch and Fasterq-Dump. This resulted in FASTQ files that could be used for running this pipeline. 
 
 ### 1. Discovering Read Quality and Trimming
-The pipeline first starts off with using FastQC to access the quality of each of the raw reads. MultiQC was then used to give a summarized singular file with all the reads output from FastQC. This makes it easier to read, rather than having a separate file for each sample. 
+The pipeline first starts off with using FastQC to access the quality of each of the raw reads. MultiQC then gives a single summarized file which compiles all of the output from FastQC. This makes it easier to read, rather than having a separate file for each sample. 
 
-The reads were then trimmed using Trimmomatic. Then, these trimmed reads were used again in FastQC and MultiQC to see the differences in read quality compared to what it was before they were trimmed. 
+The reads are then trimmed using Trimmomatic. Then, these trimmed reads are run again through FastQC and MultiQC to see the differences in read quality compared to before they were trimmed. 
 
 ### 2. Assembling Genomes to Use for Comparisons
-Using the trimmed reads, SpAdes will create assembled genomes that can be used to compare strains to one another. This will output FASTA files that will be used in the following 3 metrics. 
+Using the trimmed reads, SPAdes creates assembled genomes that can then be used to compare strains to one another. This will output FASTA files that will be used in the following 3 metrics. 
 
-### 3. 3 Comparison Metrics
-After obtaining the FASTA files, ANI, MASH, and dDDH, will take each of the FASTA files and compare them to the ancestor strain. This will give a total of 12 comparisons (each most recent population strain compared to the ancestor strain). This will output a CSV file for each one of these metrics. 
+### 3. Three Comparison Metrics
+After obtaining the FASTA files, ANI, MASH, and dDDH will take each of the population members' FASTA files and compare them to the ancestor strain. This will give a total of 12 comparisons (each most recent population member compared to the ancestor strain). Each of these metrics will output a CSV or TSV file containing their results. 
 
 ### 4. Comparing Metrics
-To compare the results from the 3 different metrics, a TSV file with all 3 metric information will output.
+To compare the results from the 3 different metrics, a TSV file combining all 3 metrics' output information is created.
 
 ### 5. Visualization
-Using this made TSV file, it will create a heatmap and a bar chart showing the different similarity calculations between each of the metrics.
-
-## TO TEST RUN - Use this sample data:
-This data involves shortened fastqs that were taken from the original data reads: [Sample Data]().
-
-## How to Run the Script
-
-### 1. 
+Using the information from this TSV file, the pipeline creates a heatmap and a bar chart showing the different similarity calculations between each of the metrics.
 
 
+## How to Run This Pipeline
 
+### 1. Retrieving necessary files
+In order for this pipeline to run, you must obtain the following files from this repository:
 
+[Pipeline script](https://github.com/lexrex333/Ecoli-Project1/blob/main/pipeline.py)
+
+[CSV of all genome information](https://github.com/lexrex333/Ecoli-Project1/blob/main/recent_strains.csv)
+
+You may obtain these either by downloading them manually and uploading them to your workspace, or by cloning this repository and pulling down the files:
+```
+git clone https://github.com/lexrex333/Ecoli-Project1.git
+```
+Another item that is necessary to run this pipeline is a directory called "Fastqs" which contains all of the raw FASTQ read files to be analyzed.
+This can be obtained in one of two ways:
+#### If using full-length FASTQ reads:
+Run [this script](https://github.com/lexrex333/Ecoli-Project1/blob/main/Get_Fastqs.py) to download genomes directly from NCBI.
+#### If using shortened sample reads:
+A folder containing the first 250,000 reads from each FASTQ can be found in this directory on the class server:
+```
+/home/project1/Ecoli-Project1/Fastqs
+```
+It is imperative that you copy this directory into your own workspace to avoid pathway-related errors when running the pipeline. You must leave the directory named "Fastqs".
+```
+cp -R /home/project1/Ecoli-Project1/Fastqs /your/destination/here/Fastqs
+```
+
+### 2. Executing the script
+Once you have all of the needed files (and dependencies!) downloaded in your primary workspace (make sure everything is in the same directory), the script is easy to call.
+```
+python pipeline.py
+```
+The pipeline will create a new directory called "pipeline_files" and output everything it creates into that space.
+
+### 3. Finding output files
+All output files will be in a directory called "pipeline_files". Specific output files of interest can be found at the following locations:
+
+TSV of all output metrics: /pipeline_files/full_output_data.tsv
+
+Heatmap of comparisons: /pipeline_files/3_Metric_Heatmap.png
+
+Bar chart of comparisons: /pipeline_files/barchart.png
+
+MultiQC report (pre-trimming): /pipeline_files/MultiQC_Results/multiqc_report.html
+
+MultiQC report (post-trimming): /pipeline_files/Trimmomatic_Results/MultiQC_Results/multiqc_report.html
