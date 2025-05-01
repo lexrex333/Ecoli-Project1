@@ -89,7 +89,8 @@ To compare the results from the 3 different metrics, a TSV file combining all 3 
 Using the information from this TSV file, the pipeline creates a heatmap and a bar chart showing the different similarity calculations between each of the metrics.
 
 
-## How to Run This Pipeline
+
+# How to Run This Pipeline
 
 ### 1. Retrieving necessary files
 In order for this pipeline to run, you must obtain the following files from this repository:
