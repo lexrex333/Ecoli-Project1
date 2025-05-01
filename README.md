@@ -26,6 +26,9 @@ For downloading the sequencing reads:
 * Download raw sample sequencing reads of 12 LTEE genomes from NCBI SRA (1 from each population)
 * Retrieve ancestral strain genome [REL606](https://www.ncbi.nlm.nih.gov/nuccore/NC_012967.1)
 
+If you wanted to download your own reads, you can use this script to do so:
+* [Downloading Reads from NCBI]
+
 ## Input Data:
 * 12 _E. coli_ genomes from the Long Term Evolution Experiment (LTEE)
 * One ancestor (REL606) genome from the LTEE
