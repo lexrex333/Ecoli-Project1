@@ -27,7 +27,7 @@ For downloading the sequencing reads:
 * Retrieve ancestral strain genome [REL606](https://www.ncbi.nlm.nih.gov/nuccore/NC_012967.1)
 
 If you wanted to download your own reads, you can use this script to do so:
-* [Downloading Reads from NCBI]
+* [Downloading Reads from NCBI](https://github.com/lexrex333/Ecoli-Project1/blob/main/Get_Fastqs.py)
 
 ## Input Data:
 * 12 _E. coli_ genomes from the Long Term Evolution Experiment (LTEE)
