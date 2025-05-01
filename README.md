@@ -37,11 +37,11 @@ pip install .
 ```
 
 Downloading MASH:
-'''bash
+```bash
 
 wget https://github.com/marbl/Mash/releases/download/v2.3/mash-Linux64-v2.3.tar
 
 tar -xvf mash-Linux64-v2.3.tar
 
 cp mash-Linux64-v2.3/mash .
-'''
+```
