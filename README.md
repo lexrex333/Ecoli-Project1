@@ -153,5 +153,7 @@ Examples of the TSV, heatmap, and bar chart are available in this repository in 
 
 Additional Output:
 >>>CSV for each individual metric
+>>>
 >>>Trimmed Fastqs from Trimmomatic
+>>>
 >>>FASTA files from SPAdes
