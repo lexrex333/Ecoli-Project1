@@ -66,7 +66,17 @@ cp mash-Linux64-v2.3/mash .
 
 Installing Trimmomatic:
 ```bash
-Micky add stuff here.
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+  -O ~/miniconda.sh
+bash ~/miniconda.sh -b -p "$HOME/miniconda3"
+
+eval "$("$HOME/miniconda3/bin/conda" shell.bash hook)"
+
+conda config --add channels conda-forge
+conda config --add channels bioconda
+
+conda create -y -n trimmomatic_env trimmomatic
+conda activate trimmomatic_env
 ```
 ## What this Pipeline Does and What it Outputs
 This pipeline is comparing 12 _E. coli_ strains to their ancestor strain, from which they diverged into 12 different populations. To compare these strains to one another, we used 3 different metrics that have not been used to compare these specific strains in other studies using the same strains. These metrics are ANI, MASH, and dDDH. 
