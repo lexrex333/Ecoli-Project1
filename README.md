@@ -14,7 +14,7 @@ Python modules:
 Tools:
 * [FastQC](https://github.com/s-andrews/FastQC)
 * [MultiQC](https://github.com/MultiQC/MultiQC)
-* [Trimmomatic](https://github.com/timflutre/trimmomatic)
+* [Trimmomatic](https://github.com/timflutre/trimmomatic) (requires [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer))
 * [SPAdes](https://github.com/ablab/spades)
 * [FastANI](https://github.com/ParBLiSS/FastANI)
 * [MASH](https://github.com/marbl/mash)
