@@ -152,8 +152,6 @@ MultiQC report (post-trimming): /pipeline_files/Trimmomatic_Results/MultiQC_Resu
 Examples of the TSV, heatmap, bar chart, and MultiQC results are available in this repository in [output_files](https://github.com/lexrex333/Ecoli-Project1/tree/main/output_files)
 
 Additional Output:
->>>CSV for each individual metric
->>>
->>>Trimmed Fastqs from Trimmomatic
->>>
->>>FASTA files from SPAdes
+* CSV for each individual metric
+* Trimmed Fastqs from Trimmomatic
+* FASTA files from SPAdes
